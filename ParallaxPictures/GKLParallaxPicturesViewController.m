@@ -7,8 +7,11 @@
 //
 
 #import "GKLParallaxPicturesViewController.h"
+#import "GKLImageViewController.h"
 
 @interface GKLParallaxPicturesViewController ()
+
+@property (nonatomic, strong) GKLImageViewController *imageViewController;
 
 @end
 
@@ -113,6 +116,16 @@ static CGFloat PageControlHeight = 20.0f;
     CGFloat xOffset   = _transparentScroller.contentOffset.x;
     CGFloat threshold = ImageHeight - WindowHeight;
     
+    if (yOffset < -80.0f) {
+        UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 320, 30)];
+        label.text = @"Check";
+        [_imageScroller addSubview:label];
+        
+        if (_imageViewController == nil) {
+            _imageViewController = [[GKLImageViewController alloc] initWithImage:[UIImage imageNamed:@"shovel.png"]];
+            [self presentViewController:_imageViewController animated:NO completion:nil];
+        }
+    }
     if (yOffset > -threshold && yOffset < 0) {
         _imageScroller.contentOffset = CGPointMake(xOffset, floorf(yOffset / 2.0));
     } else if (yOffset < 0) {
